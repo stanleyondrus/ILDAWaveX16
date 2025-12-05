@@ -17,7 +17,7 @@ Full documentation is available at [stanleyprojects.com](https://stanleyprojects
   - Intensity resolution: 65,536  
   - 16-bit user-programmable channels USR1/USR2  
 - **ILDA DB25 connector** for standard projectors  
-- **JST SH connectors** for direct wiring to driver kits
+- **JST XH connectors** for direct wiring to driver kits
 - **USB-C power** (no need for bipolar PSU) or optional ±15V external supply  
 - **microSD card slot** for ILDA file playback  
 - Compact: 55 x 53 mm  
