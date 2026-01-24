@@ -35,7 +35,7 @@ void init_wifi() {
   preferences.end();
 
   if (ssid == "" || password == ""){
-    ssid = "{default_ssid}>";
+    ssid = "{default_ssid}";
     password = "{default_pass}";
   }
 
