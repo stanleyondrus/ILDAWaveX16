@@ -63,119 +63,48 @@ const char index_html[] PROGMEM = R"rawliteral(
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SD Player</title>
 <style>
-html,body{height:100%;margin:0;padding:0;}
-body{display:flex;flex-direction:column;font-family:sans-serif;background:#f4f4f4;}
-main{flex:1;padding:20px;padding-top: 0;}
-table{border-collapse:collapse;width:100%;margin-bottom:20px;}
-th,td{padding:10px;border:1px solid #ccc;text-align:left;}
-tr:hover{background:#eee;}
-input[type=number]{width:80px;}
-button{padding:10px 20px;margin:5px;font-size:16px;}
-.selected{background:#d0eaff!important;}
-fieldset{border:1px solid #ccc;padding:15px;margin-top:20px;}
-legend{font-weight:bold;}
-#tableContainer{max-height:300px;overflow-y:auto;margin-bottom:20px;}
-footer{font-size:12px;text-align:center;color:#888;padding:10px 0;background:#f0f0f0;}
-input[type=range]{width:20%;margin:10px 0;}
+*{box-sizing:border-box}:root{--bg:#1a1a1f;--surface:#252530;--primary:#32323f;--accent:#4a9eff;--text:#e8e8ec;--text-dim:#8888a0;--border:#3a3a48;--radius:0.5em}html,body{margin:0;padding:0;min-height:100%}body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}main{max-width:60em;margin:0 auto;padding:1em}h2{text-align:center;margin:.5em 0 1em;font-size:1.5em;background:linear-gradient(90deg,red,#ff8000,#ff0,#0f0,#0ff,#0080ff,#8000ff,#ff0080,red);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:r 3s linear infinite}@keyframes r{to{background-position:200% 50%}}.card{background:var(--surface);border-radius:var(--radius);padding:1em;margin-bottom:1em}.card-title{font-weight:600;margin-bottom:.75em;padding-bottom:.5em;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.5em}#tableContainer{max-height:12em;overflow-y:auto;border-radius:var(--radius);background:var(--primary)}table{width:100%;border-collapse:collapse}th,td{padding:.6em .8em;text-align:left}th{background:var(--bg);position:sticky;top:0;font-size:.85em;text-transform:uppercase;color:var(--text-dim)}tr:not(:last-child) td{border-bottom:1px solid var(--border)}tr:hover td{background:rgba(74,158,255,.1)}tr.selected td{background:rgba(74,158,255,.25)}.btn-row{display:flex;gap:.5em;margin-top:1em;flex-wrap:wrap}button{flex:1;min-width:6em;padding:.75em 1em;border:none;border-radius:var(--radius);background:var(--primary);color:var(--text);font-size:1em;cursor:pointer;transition:background .2s,transform .1s}button:hover{background:var(--accent)}button:active{transform:scale(.97)}.control-group{margin-bottom:1em}.control-group:last-child{margin-bottom:0}.control-label{display:flex;justify-content:space-between;margin-bottom:.3em;font-size:.9em}.control-value{color:var(--accent);font-weight:600}input[type=range]{width:100%;height:.4em;border-radius:.2em;background:var(--primary);outline:none;-webkit-appearance:none}input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:1.2em;height:1.2em;border-radius:50%;background:var(--accent);cursor:pointer}input[type=range]::-moz-range-thumb{width:1.2em;height:1.2em;border-radius:50%;background:var(--accent);cursor:pointer;border:none}.input-group{display:flex;flex-direction:column;gap:.5em}input[type=text]{width:100%;padding:.7em;border:1px solid var(--border);border-radius:var(--radius);background:var(--primary);color:var(--text);font-size:1em}input[type=text]:focus{outline:2px solid var(--accent);outline-offset:-2px}input[type=text]::placeholder{color:var(--text-dim)}footer{text-align:center;padding:1em;color:var(--text-dim);font-size:.8em}@media(max-width:30em){main{padding:.5em}.card{padding:.8em}th,td{padding:.5em;font-size:.9em}}
 </style>
 </head>
 <body>
-
 <main>
-<h2>ILDAWaveX16</h2>
-
-<fieldset>
-<legend>📁 SD Card</legend>
+<h2>&#9889; ILDAWaveX16 &#9889;</h2>
+<div class="card">
+<div class="card-title">&#128194; SD Card</div>
 <div id="tableContainer">
 <table id="fileTable"><tr><th>Filename</th><th>Size</th></tr><!-- FILE_ROWS --></table>
 </div>
-<button onclick="playFile()">▶️ Play</button>
-<button onclick="stopFile()">⏹️ Stop</button>
-</fieldset>
-
-<fieldset>
-<legend>⚙️ Projection Settings</legend>
-<label for="scanRate">Scan Period [us]: <span id="rateValue">10</span></label><br>
-<input type="range" id="scanRate" min="10" max="10000" step="1" value="10" oninput="updateSettings()"><br><br>
-
-<label for="brightness">Brightness: <span id="brightnessValue">50</span>%</label><br>
-<input type="range" id="brightness" min="0" max="100" step="1" value="100" oninput="updateSettings()">
-</fieldset>
-
-<fieldset>
-<legend>⚙️ Wi-Fi Settings</legend>
-<label for="ssid">SSID:</label><input type="text" id="ssid">
-<label for="pass">Pass:</label><input type="text" id="pass">
-<button onclick="setWiFi()">Save & Connect</button>
-</fieldset>
+<div class="btn-row">
+<button onclick="playFile()">&#9654; Play</button>
+<button onclick="stopFile()">&#9209; Stop</button>
+</div>
+</div>
+<div class="card">
+<div class="card-title">&#9881; Projection Settings</div>
+<div class="control-group">
+<div class="control-label"><span>Scan Period</span><span class="control-value"><span id="rateValue">10</span> &micro;s</span></div>
+<input type="range" id="scanRate" min="10" max="10000" value="10" oninput="updateSettings()">
+</div>
+<div class="control-group">
+<div class="control-label"><span>Brightness</span><span class="control-value"><span id="brightnessValue">100</span>%</span></div>
+<input type="range" id="brightness" min="0" max="100" value="100" oninput="updateSettings()">
+</div>
+</div>
+<div class="card">
+<div class="card-title">&#128246; Wi-Fi Settings</div>
+<div class="input-group">
+<input type="text" id="ssid" placeholder="SSID">
+<input type="text" id="pass" placeholder="Password">
+<button onclick="setWiFi()">Save &amp; Connect</button>
+</div>
+</div>
 </main>
-
-<footer>
-StanleyProjects &nbsp; | &nbsp; VER 0.1
-</footer>
-
+<footer><a href="https://stanleyprojects.com/" style="color:inherit;text-decoration:none" target="_blank" rel="noopener noreferrer">StanleyProjects</a> | VER 0.1</footer>
 <script>
-let selectedFile = null;
-document.addEventListener("DOMContentLoaded",()=>{
-  document.querySelectorAll("#fileTable tr").forEach((row,i)=>{
-    if(i===0) return;
-    row.addEventListener("click",()=>{
-      document.querySelectorAll("#fileTable tr").forEach(r=>r.classList.remove("selected"));
-      row.classList.add("selected");
-      selectedFile = row.dataset.filename;
-    });
-    row.addEventListener("dblclick",()=>{
-      selectedFile = row.dataset.filename;
-      playFile();
-    });
-  });
-});
-
-function playFile(){
-  if(!selectedFile){ alert("Select a file."); return; }
-  const rate = document.getElementById("scanRate").value;
-  fetch(`/play?file=${encodeURIComponent(selectedFile)}&rate=${rate}`);
-}
-function stopFile(){
-  fetch("/stop");
-}
-function updateSettings() {
-  const rateSlider = document.getElementById("scanRate");
-  const brightnessSlider = document.getElementById("brightness");
-  const rateValue = document.getElementById("rateValue");
-  const brightnessValue = document.getElementById("brightnessValue");
-
-  rateValue.textContent = rateSlider.value;
-  brightnessValue.textContent = brightnessSlider.value;
-
-  const rate = rateSlider.value;
-  const brightness = brightnessSlider.value;
-
-  let url = "/control?";
-  const params = [];
-  if(rate) params.push(`rate=${encodeURIComponent(rate)}`);
-  if(brightness) params.push(`brightness=${encodeURIComponent(brightness)}`);
-  url += params.join("&");
-
-  fetch(url).catch(console.error);
-}
-// function setSettings(){
-//   const rate = document.getElementById("scanRate").value;
-//   const brightness = document.getElementById("brightness").value;
-//   let url = "/control?";
-//   const params = [];
-//   if(rate) params.push(`rate=${encodeURIComponent(rate)}`);
-//   if(brightness) params.push(`brightness=${encodeURIComponent(brightness)}`);
-//   url += params.join("&");
-//   fetch(url);
-// }
-function setWiFi(){
-  const ssid = document.getElementById("ssid").value;
-  const pass = document.getElementById("pass").value;
-  fetch(`/set_wifi?ssid=${encodeURIComponent(ssid)}&pass=${encodeURIComponent(pass)}`);
-}
+let s=null;document.addEventListener("DOMContentLoaded",()=>{document.querySelectorAll("#fileTable tr").forEach((r,i)=>{if(!i)return;r.onclick=()=>{document.querySelectorAll("#fileTable tr").forEach(x=>x.classList.remove("selected"));r.classList.add("selected");s=r.dataset.filename};r.ondblclick=()=>{s=r.dataset.filename;playFile()}})});function playFile(){if(!s){alert("Select a file.");return}fetch(`/play?file=${encodeURIComponent(s)}&rate=${document.getElementById("scanRate").value}`)}function stopFile(){fetch("/stop")}function updateSettings(){const r=document.getElementById("scanRate"),b=document.getElementById("brightness");document.getElementById("rateValue").textContent=r.value;document.getElementById("brightnessValue").textContent=b.value;fetch(`/control?rate=${r.value}&brightness=${b.value}`).catch(console.error)}function setWiFi(){fetch(`/set_wifi?ssid=${encodeURIComponent(document.getElementById("ssid").value)}&pass=${encodeURIComponent(document.getElementById("pass").value)}`)}
 </script>
 </body>
 </html>
